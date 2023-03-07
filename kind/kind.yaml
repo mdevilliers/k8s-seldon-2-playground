@@ -1,0 +1,25 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  extraMounts:
+    - hostPath: /tmp/seldon
+      containerPath: /var/local-path-provisioner
+- role: worker
+  extraMounts:
+    - hostPath: /tmp/seldon
+      containerPath: /var/local-path-provisioner
+- role: worker
+  extraMounts:
+    - hostPath: /tmp/seldon
+      containerPath: /var/local-path-provisioner
+kubeadmConfigPatches:
+  - |
+    apiVersion: kubeadm.k8s.io/v1beta2
+    kind: ClusterConfiguration
+    metadata:
+      name: config
+    apiServer:
+      extraArgs:
+        "service-account-issuer": "kubernetes.default.svc"
+        "service-account-signing-key-file": "/etc/kubernetes/pki/sa.key"
