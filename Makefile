@@ -39,7 +39,7 @@ install_seldon: k8s_connect
 	kubectl apply -f ./k8s/minio/secret.yaml -n seldon-mesh
 	helm install seldon-core-v2-crds seldon-charts/seldon-core-v2-crds
 	helm install seldon-core-v2 seldon-charts/seldon-core-v2-setup --namespace seldon-mesh --create-namespace
-	helm install seldon-servers-v2 seldon-charts/seldon-core-v2-servers --namespace seldon-mesh
+	helm install seldon-core-v2-servers seldon-charts/seldon-core-v2-servers --namespace seldon-mesh
 	
 .PHONY: helm_init
 helm_init:
@@ -51,4 +51,4 @@ helm_init:
 	helm repo update minio
 
 .PHONY: boot
-boot: k8s_new helm_init install_kafka install_seldon
+boot: k8s_new helm_init install_kafka install_minio install_seldon
