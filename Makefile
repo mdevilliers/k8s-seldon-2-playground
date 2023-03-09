@@ -25,11 +25,13 @@ install_kafka: k8s_connect
 
 .PHONY: install_seldon
 install_seldon: k8s_connect
-	kubectl apply -f ./kafka/instance.yaml -n seldon-mesh
+	kubectl apply -f ./k8s/namespace.yaml
+	kubectl apply -f ./kafka/broker.yaml -n seldon-mesh 
 	helm install seldon-core-v2-crds seldon-charts/seldon-core-v2-crds
 	helm install seldon-core-v2 seldon-charts/seldon-core-v2-setup --namespace seldon-mesh --create-namespace
 	helm install seldon-servers-v2 seldon-charts/seldon-core-v2-servers --namespace seldon-mesh
 
+	
 .PHONY: helm_init
 helm_init:
 	helm repo add strimzi https://strimzi.io/charts/
