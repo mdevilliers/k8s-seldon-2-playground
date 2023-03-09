@@ -1,0 +1,15 @@
+replicas: 1
+rootUser: rootuser
+rootPassword: rootpass123
+
+mode: standalone
+
+buckets:
+  # bucket to store seldon data
+  - name : seldon 
+    policy: none
+    purge : false 
+    
+resources:
+  requests:
+    memory: 120m
