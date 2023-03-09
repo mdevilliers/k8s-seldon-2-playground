@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  labels:
+    app: kafka-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+        logging: app
+    spec:
+      securityContext:
+        fsGroup: 1000
+      restartPolicy: Always
+      containers:
+      - name: ui
+        image: provectuslabs/kafka-ui:latest
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+        env:
+        - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+          value: seldon-kafka-bootstrap.seldon-mesh:9092
+        - name: KAFKA_CLUSTERS_0_NAME
+          value: seldon-kafka
+        - name: KAFKA_CLUSTERS_0_READONLY
+          value: 'false'
+        ports:
+        - name: http-ui
+          containerPort: 8080
