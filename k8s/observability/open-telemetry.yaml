@@ -1,0 +1,26 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: seldon
+spec:
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+    processors:
+      batch:
+    exporters:
+      logging:
+        
+      jaeger:
+        endpoint: seldon-collector.seldon-observability:14250
+        tls:
+          insecure: true
+      
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [logging, jaeger]

@@ -1,0 +1,63 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: agent
+spec:
+  selector:
+    matchLabels:
+      app: seldon-server
+  namespaceSelector:
+    matchNames: []
+    any: false
+  podMetricsEndpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: envoy
+spec:
+  selector:
+    matchLabels:
+      app: seldon-mesh
+  namespaceSelector:
+    matchNames: []
+    any: false
+  endpoints:
+  - port: admin
+    interval: 15s
+    path: /stats/prometheus
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: pipelinegateway
+spec:
+  selector:
+    matchLabels:
+      app: pipelinegateway
+  namespaceSelector:
+    matchNames: []
+    any: false
+  podMetricsEndpoints:
+  - port: metrics
+    interval: 15s
+    path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: server
+spec:
+  selector:
+    matchLabels:
+      app: seldon-server
+  namespaceSelector:
+    matchNames: []
+    any: false
+  podMetricsEndpoints:    
+  - port: server-metrics
+    interval: 15s
+    path: /metrics
