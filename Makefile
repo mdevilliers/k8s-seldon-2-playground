@@ -43,6 +43,7 @@ install_seldon: k8s_connect
 	helm install seldon-core-v2-crds seldon-charts/seldon-core-v2-crds
 	helm install seldon-core-v2 seldon-charts/seldon-core-v2-setup --namespace $(SELDON_NS)
 	helm install seldon-core-v2-servers seldon-charts/seldon-core-v2-servers --namespace $(SELDON_NS)
+	sleep 30
 	kubectl apply -f ./k8s/observability/jaeger.yaml -n $(SELDON_OBS_NS)
 	kubectl apply -f ./k8s/observability/prometheus.yaml -n $(SELDON_NS)
 	kubectl apply -f ./k8s/observability/open-telemetry.yaml -n $(SELDON_NS)
@@ -57,8 +58,11 @@ install_observability:
 		-f ./k8s/observability/prometheus-operator-values.yaml \
 		--namespace $(SELDON_OBS_NS) --create-namespace
 	helm install jaeger-operator jaegertracing/jaeger-operator --namespace $(SELDON_OBS_NS) --create-namespace
+	sleep 5
+	kubectl wait --for condition=established --timeout 60s crd/jaegers.jaegertracing.io
 	helm install opentelemetry-operator open-telemetry/opentelemetry-operator --namespace $(SELDON_OBS_NS) --create-namespace
-	
+	kubectl wait --for condition=established --timeout 60s crd/instrumentations.opentelemetry.io
+
 .PHONY: helm_init
 helm_init:
 	helm repo add strimzi https://strimzi.io/charts/
