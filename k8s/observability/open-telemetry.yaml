@@ -14,7 +14,7 @@ spec:
       logging:
         
       jaeger:
-        endpoint: seldon-collector.seldon-observability:14250
+        endpoint: seldon-agent.seldon-observability:14250
         tls:
           insecure: true
       

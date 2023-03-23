@@ -8,7 +8,7 @@ spec:
       app: seldon-server
   namespaceSelector:
     matchNames: []
-    any: false
+    any: true
   podMetricsEndpoints:
   - port: metrics
     interval: 15s
@@ -24,7 +24,7 @@ spec:
       app: seldon-mesh
   namespaceSelector:
     matchNames: []
-    any: false
+    any: true
   endpoints:
   - port: admin
     interval: 15s
@@ -40,7 +40,7 @@ spec:
       app: pipelinegateway
   namespaceSelector:
     matchNames: []
-    any: false
+    any: true
   podMetricsEndpoints:
   - port: metrics
     interval: 15s
@@ -56,7 +56,7 @@ spec:
       app: seldon-server
   namespaceSelector:
     matchNames: []
-    any: false
+    any: true
   podMetricsEndpoints:    
   - port: server-metrics
     interval: 15s
